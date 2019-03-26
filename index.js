@@ -52,6 +52,38 @@ server.get('/api/zoos/:id', async (req,res) => {
   }
 })
 
+server.put('/api/zoos/:id', async (req,res) => {
+  const {id} = req.params;
+  const {name} = req.body;
+
+  if (!name) {
+    res.status(400).json({ error: "Not enough nomenclature."})
+  } else {
+
+    try { 
+      let reply = await db('zoos').where('id', id).update({ name });
+
+      res.status(202).json(reply);
+    } catch(error) {
+      res.status(500).json({ error: "The DB got drunk and forgot your name." });
+    }
+
+  }
+})
+
+
+server.delete('/api/zoos/:id', async (req,res) => {
+  const {id} = req.params;
+
+ try { 
+    let reply = await db('zoos').where('id', id).del();
+
+    res.status(202).json(reply);
+  } catch(error) {
+    res.status(500).json({ error: "The DB got drunk and forgot your name." });
+  }
+})
+
 const port = 3300;
 server.listen(port, function() {
   console.log(`\n=== Web API Listening on http://localhost:${port} ===\n`);
