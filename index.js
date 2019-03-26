@@ -20,7 +20,7 @@ server.post('/api/zoos/', async (req,res) => {
   } else {
 
     try { 
-      let reply = await db.insert(name);
+      let reply = await db('zoos').insert({ name });
 
       res.status(201).json(reply);
     } catch(error) {
