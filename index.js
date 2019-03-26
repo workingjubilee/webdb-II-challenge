@@ -11,9 +11,41 @@ const server = express();
 server.use(express.json());
 server.use(helmet());
 
-server.get('/', async (req,res) => {
+
+server.post('/api/zoos/', async (req,res) => {
+  const {name} = req.body;
+
+  if (!name) {
+    res.status(400).json({ error: "Not enough nomenclature."})
+  } else {
+
+    try { 
+      let reply = await db.insert(name);
+
+      res.status(201).json(reply);
+    } catch(error) {
+      res.status(500).json({ error: "The DB lost your request while it went gambling." });
+    }
+
+  }
+})
+
+server.get('/api/zoos/', async (req,res) => {
   try { 
-    let reply = await db.from();
+    let reply = await db.from('zoos')
+
+    res.status(200).json(reply);
+  } catch(error) {
+    res.status(500).json(error);
+  }
+})
+
+server.get('/api/zoos/:id', async (req,res) => {
+  const {id} = req.params;
+
+  try { 
+    let reply = await db.from('zoos').where('id', id);
+    
     res.status(200).json(reply);
   } catch(error) {
     res.status(500).json(error);
