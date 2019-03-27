@@ -80,7 +80,7 @@ server.delete('/api/zoos/:id', async (req,res) => {
 
     res.status(202).json(reply);
   } catch(error) {
-    res.status(500).json({ error: "The DB got drunk and forgot your name." });
+    res.status(500).json({ error: "The DB broke everything EXCEPT the record you wanted gone." });
   }
 })
 
